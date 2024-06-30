@@ -1,28 +1,29 @@
 import numpy as np
 
-symbols = ".,-+*=#@$"
+SYMBOLS = ".,-+*=#@$"
+BLOCK_WIDTH: int = 5
+BLOCK_HEIGHT: int = 10
 
 
-def _aggregate_image(img: np.ndarray, block_width: int = 8, block_height: int = 16) -> np.ndarray:
+def _aggregate_image(img: np.ndarray) -> np.ndarray:
     height, width = img.shape
-    new_width = width // block_width
-    new_height = height // block_height
+    new_width = width // BLOCK_WIDTH
+    new_height = height // BLOCK_HEIGHT
     aggregated_img = np.zeros((new_height, new_width), dtype=int)
     for i in range(new_height):
         for j in range(new_width):
-            block = img[i*block_height:(i+1)*block_height, j*block_width:(j+1)*block_width]
+            block = img[i*BLOCK_HEIGHT:(i+1)*BLOCK_HEIGHT, j * BLOCK_WIDTH:(j + 1) * BLOCK_WIDTH]
             aggregated_img[i, j] = np.mean(block)
     return aggregated_img
 
 
-def convert2ascii(img: np.ndarray) -> [str]:
+def convert2ascii(img: np.ndarray) -> str:
     aggregated_img = _aggregate_image(img)
-    ascii_img = []
+    text = ""
     for i in range(aggregated_img.shape[0]):
-        row = ""
         for j in range(aggregated_img.shape[1]):
             intensity = aggregated_img[i, j]
-            symbol_index = intensity * (len(symbols) - 1) // 255
-            row += symbols[symbol_index]
-        ascii_img.append(row)
-    return ascii_img
+            symbol_index = intensity * (len(SYMBOLS) - 1) // 255
+            text += SYMBOLS[symbol_index]
+        text += "\n"
+    return text
