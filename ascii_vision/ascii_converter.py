@@ -1,6 +1,6 @@
 import numpy as np
 
-SYMBOLS = ".,-+*=#@$"
+SYMBOLS = " .-,=+#@$"
 BLOCK_WIDTH: int = 5
 BLOCK_HEIGHT: int = 10
 
